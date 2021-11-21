@@ -1,0 +1,39 @@
+author: mongoose-os
+description: A JS-enabled demo Mongoose OS firmware
+# arch: PLATFORM
+version: 1.0
+manifest_version: 2017-05-18
+libs_version: ${mos.version}
+modules_version: ${mos.version}
+mongoose_os_version: ${mos.version}
+
+config_schema:
+  - ["wifi.ap.enable", false]
+  - ["wifi.sta.enable", true]
+  - ["wifi.sta.ssid", "MEGATON"]
+  - ["wifi.sta.pass", "*******"]
+  - ["wifi.sta_connect_timeout", 60]
+  - ["spi.enable", true]
+  - ["spi.cs0_gpio", 5]
+
+tags:
+  - js
+
+filesystem:
+  - fs
+
+sources:
+  - src
+
+libs:
+  - location: https://github.com/mongoose-os-libs/boards
+  - location: https://github.com/mongoose-os-libs/mjs
+  - location: https://github.com/mongoose-os-libs/prometheus-metrics
+  - location: https://github.com/mongoose-os-libs/bme280
+
+conds:
+  - when: mos.platform == "esp32"
+    apply:
+      build_vars:
+        # Icrease app szie for ESP32
+        APP_SLOT_SIZE: 0x190000
